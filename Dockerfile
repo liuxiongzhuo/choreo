@@ -6,6 +6,8 @@ RUN apt install unzip -y
 RUN apt install procps -y
 RUN apt install nginx -y
 COPY ./sleep.sh .
-RUN useradd -m -s /bin/bash user
+RUN uaddgroup --gid 10008 onegroup &&\
+adduser --disabled-password  --no-create-home --uid 10008 --ingroup onegroup oneuser &&\
+usermod -aG sudo oneuser &&\
 CMD ["bash","./sleep.sh;"]
-USER user
+USER 10008
