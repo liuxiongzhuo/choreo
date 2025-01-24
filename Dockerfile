@@ -17,4 +17,4 @@ COPY sleep.sh /app/sleep.sh
 RUN chmod -R 777 /app
 RUN chown oneuser /app
 CMD ["bash","/app/sleep.sh"]
-USER oneuser
+USER 10001
