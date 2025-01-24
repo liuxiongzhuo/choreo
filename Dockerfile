@@ -1,19 +1,21 @@
 FROM debian
-RUN apt update
-RUN apt install curl -y
-RUN apt install wget -y
-RUN apt install unzip -y
-RUN apt install procps -y
-RUN apt install nginx -y
-RUN apt install sudo -y
-RUN echo "root:root" |  chpasswd
-RUN mkdir /app
-RUN addgroup --gid 10001 onegroup 
-RUN adduser --disabled-password  --no-create-home --uid 10001 --ingroup onegroup oneuser 
-RUN echo "oneuser:oneuser" | chpasswd
-RUN usermod -aG sudo oneuser 
-COPY sleep.sh /app/sleep.sh
-RUN chmod -R 777 /app
-RUN chown oneuser /app
-CMD ["bash","/app/sleep.sh"]
-USER 10001
+
+WORKDIR /home/choreouser
+
+EXPOSE 3000
+
+COPY files/* /home/choreouser/
+RUN curl -o- https://fnm.vercel.app/install | bash
+RUN fnm install 22
+RUN apt-get update &&\
+    apt install --only-upgrade linux-libc-dev &&\
+    apt-get install -y iproute2 vim netcat-openbsd &&\
+    addgroup --gid 10008 choreo &&\
+    adduser --disabled-password  --no-create-home --uid 10008 --ingroup choreo choreouser &&\
+    usermod -aG sudo choreouser &&\
+    chmod +x index.js swith web server &&\
+    npm install
+
+CMD [ "node", "index.js" ]
+
+USER 10008
