@@ -6,4 +6,5 @@ RUN apt install unzip -y
 RUN apt install procps -y
 RUN apt install nginx -y
 COPY ./sleep.sh .
+RUN useradd -m -s /bin/bash user
 CMD ["bash","./sleep.sh;"]
